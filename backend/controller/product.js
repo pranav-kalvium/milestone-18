@@ -242,4 +242,29 @@ router.post('/cart',async (req,res)=>{
     }
 });
 
+router.get('/cartproducts',async (req,res) => {
+    try{
+        const {email} = req.query;
+        if(!email){
+            return res.status(400).json({error: "Email query parameteris required"});
+        }
+
+        const user = await User.findOne({email}).populate({
+            path: 'cart.productId',
+            model:'Product'
+        });
+        if(!user){
+            return res.status(400).json({error: "User not found"});
+        } 
+        res.status(200).json({
+            message: 'Cart retrieved successfully',
+            cart: user.cart,
+        });
+
+    }catch(error){
+        console.error('Server error',error);
+        res.status(500).json({error: "Server error"});
+    }
+})
+
 module.exports = router;
