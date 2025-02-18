@@ -39,6 +39,19 @@ const productSchema = new mongoose.Schema(
             type: Date,
             default: Date.now, // Automatically set the creation date
         },
+        cart:[{
+            productid:{
+                type:String,
+                required : [true,"Please provide the product ID"],
+                unique : true,
+            },
+
+            quantity:{
+                type:Number,
+                required : [true,"Please provide the product quantity"],
+                min : [0,"Quantity cannot be negative"],
+            },
+        }]
     },
     {
         timestamps: true, 
@@ -46,3 +59,4 @@ const productSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model("Product", productSchema);
+
